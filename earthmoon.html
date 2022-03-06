@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My World</title>
+        <style>
+            body { 
+                margin: 0;  
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+
+        </div>
+    </body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+        <script src="https://threejs.org/build/three.js"></script>
+        <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+        <script type="text/javascript">
+            var $container = $('#container');
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            
+            //Enabled shadowmapping on renderer to make sure it rendered the shadows also
+            renderer.shadowMap.enabled = true;
+            //renderer.shadowMap.type = THREE.PCFSoftShadowMap();
+
+            //OrbitControls allows you to zoom in and out and rotate the molecule
+            const controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.enableDamping = true;
+            
+
+            camera.position.z = 200;
+            //controls.update();
+            scene.add(camera);
+            
+            $container.append(renderer.domElement);
+
+            //Keeps everything illuminated so it can be seen well
+            const light2 = new THREE.AmbientLight(0xffffff);
+            scene.add(light2);
+
+            //saves urls for textures
+            const stars = 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Hidden_Valley_Campground_-_Starry_sky_-_07.JPG';
+            const world = 'https://upload.wikimedia.org/wikipedia/commons/c/cf/WorldMap-A_non-Frame.png';
+            const satellite = 'https://upload.wikimedia.org/wikipedia/commons/d/db/Moonmap_from_clementine_data.png';
+
+            //instantiates texture loader
+            const loader = new THREE.TextureLoader();
+           loader.crossOrigin = "Anonymous"; //crossOrigin needs to be set to anonymous to accept urls
+            const earthTexture = loader.load(world); //adds the world texture
+            const moonTexture = loader.load(satellite); //adds the moon texture
+            const group = new THREE.Group();
+
+            // background texture https://upload.wikimedia.org/wikipedia/commons/e/e4/Hidden_Valley_Campground_-_Starry_sky_-_07.JPG
+            //Creates textures for Earth and moon
+            /*loader.load(
+                url("https://upload.wikimedia.org/wikipedia/commons/c/cf/WorldMap-A_non-Frame.png"),
+                function ( texture ) {
+                    var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+                    var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5} );
+                    var mesh = new THREE.Mesh( geometry, material );
+                    group.add( mesh );
+                });*/
+            //const earthTexture = new THREE.Texture(generateTexture() );
+            //texture.needsUpdate = true;
+            //const texture = new Texture.load(url("https://upload.wikimedia.org/wikipedia/commons/c/cf/WorldMap-A_non-Frame.png"));
+            //const moonTexture = new THREE.ImageUtils.loadTexture(url("https://upload.wikimedia.org/wikipedia/commons/d/db/Moonmap_from_clementine_data.png"));
+
+            //Create Earth scene
+            const geometryEarth = new THREE.SphereGeometry(1, 32, 32);
+            const materialEarth = new THREE.MeshPhongMaterial({
+                map: earthTexture,
+                roughness: 1,
+                metalness: 0
+                
+            });
+            const earth = new THREE.Mesh (geometryEarth, materialEarth); //creates carbon shape
+            earth.position.set(0, 0, 0); // not necessary but places it in the center
+            earth.castShadow = true; //makes sure that it casts a shadow
+            earth.receiveShadow = true; //can have shadows emitted on it
+            scene.add(earth);
+
+            //Create moon scene
+            const geometryMoon = new THREE.SphereGeometry(0.3, 32, 32);
+            const materialMoon = new THREE.MeshPhongMaterial({
+                map: moonTexture,
+                roughness: 1,
+                metalness: 0
+            });
+            const moon = new THREE.Mesh (geometryMoon, materialMoon); //creates moon shape
+            moon.position.set(2, 0, 0); // not necessary but places it in the center
+            moon.castShadow = true; //makes sure that it casts a shadow
+            moon.receiveShadow = true; //can have shadows emitted on it
+            //scene.add(moon);
+            earth.add(moon);
+
+            //Creates a light that is above the image and can cast shadows
+            const light = new THREE.DirectionalLight(0xffffff, 7, 5);
+            light.castShadow = true;
+            light.position.set(2, 0, 0)
+            scene.add(light);
+
+            /*function generateTexture() {
+                const canvas = document.createElement( 'canvas');
+                canvas.width = 256;
+                canvas.height = 256;
+
+                const context = canvas.getContext( '2d' );
+                const image= context.getImageData(0, 0, 256, 256 );
+
+                let x=0, y=0;
+
+                for( let i=0, j=0, l=image.data.length; i < l; i+= 4, j++){
+                    x = j %256;
+                    y = ( x === 0) ? y+1 : y;
+
+                    image.data[ i ] = 255;
+                    image.data[ i + 1 ] = 255;
+                    image.data[ i + 2 ] = 255;
+                    image.data[ i + 3 ] = Math.floor( x ^ y );
+                }
+                context.putImageData( image, 0, 0 );
+                return canvas;
+            }*/
+            
+            //const helper = new THREE.CameraHelper( light.shadow.camera );
+            camera.position.z = 5;
+
+            const rotation = (obj) => {
+                obj.rotation.y += 0.01;
+            };
+            const translation = (obj) =>{
+                obj.rotation.y += 0.01;
+            }
+
+            function animate() {
+                requestAnimationFrame( animate );
+                translation(earth);
+                rotation(moon);
+                controls.update();
+                renderer.render( scene, camera );
+            }
+            animate();
+        </script>
+</html>
+
