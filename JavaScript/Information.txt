@@ -1,0 +1,1 @@
+In this folder, you will find a few problems that I solved using JavaScript. They range from Easy to Medium in difficulty.
