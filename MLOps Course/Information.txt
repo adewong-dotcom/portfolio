@@ -1,0 +1,2 @@
+In this folder, I have included the coursework from my MLOps course to show the work I implemented. It is formatted as a
+Colab notebook and it is separated by week.
