@@ -1,0 +1,1 @@
+In this folder, you will find a Java application where I have been creating my own implementation of each Sorting Algorithm.
