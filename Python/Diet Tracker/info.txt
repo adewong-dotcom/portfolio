@@ -1,0 +1,2 @@
+This application currently has the bmi information placed in for convenience but I plan on having it ask the user for that information.
+I based my recommendations on information on healthline and other reliable sources.
