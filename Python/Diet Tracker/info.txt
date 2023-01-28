@@ -1,2 +1,6 @@
-This application currently has the bmi information placed in for convenience but I plan on having it ask the user for that information.
-I based my recommendations on information on healthline and other reliable sources.
+This application is my take on how the knapsack problem could be applied to a real-life problem by giving the user suggestions for foods that would give him/her the greatest utility or happiness based on their bmi and required caloric intake.
+
+It currently has the bmi information placed in for convenience but I plan on having it ask the user for that information to calculate the user's bmi.
+It calculates the user's bmi based on the person's weight and height since that is the suggested formula by the CDC but I plan on expanding it to take into account race since I found that Harvard has a study that has found some races are at a higher risk for diseases and need to have lower bmis.
+It then feeds that information to the Calorie_Intake_Recommender to suggest the amount of calories based on the person's age, bmi, and gender which is based off of the National Heart Association's recommendations. The Food file is for the user to give each food a utility which is the amount of happiness 
+that the food gives him. However, I expect the utility to go down over time based on economics so I want the application to ask the user to confirm or modify the utility every 2 weeks. Lastly, I plan on having the application suggest the meals in such a way that it provides the greatest utility while staying within their caloric intake and making sure that the person has at least 3 meals per day.
